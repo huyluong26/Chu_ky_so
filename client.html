@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Truyền file ký số</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Xin chào {{ username }}</h2>
+        <form action="/logout" method="post" style="display:inline;">
+            <button type="submit">Đăng xuất</button>
+        </form>
+
+        <label>Gửi đến:</label>
+        <input type="text" id="receiver" placeholder="Nhập tên người nhận...">
+
+        <label>Chọn file:</label>
+        <input type="file" id="fileInput"><br>
+
+        <label>Chọn chữ ký số:</label>
+        <input type="file" id="sigInput"><br><br>
+
+        <button onclick="sendFile()">Gửi File</button>
+
+        <hr>
+        <div id="receiveArea"></div>
+    </div>
+
+    <script>
+        const socket = io();
+        const username = "{{ username }}";
+        socket.emit('join', username);
+
+        function sendFile() {
+            const receiver = document.getElementById('receiver').value;
+            const file = document.getElementById('fileInput').files[0];
+            const sig = document.getElementById('sigInput').files[0];
+
+            if (!file || !sig || !receiver) {
+                alert("Điền đầy đủ thông tin!");
+                return;
+            }
+
+            const reader1 = new FileReader();
+            const reader2 = new FileReader();
+
+            reader1.onload = () => {
+                reader2.onload = () => {
+                    socket.emit('send_file', {
+                        sender: username,
+                        receiver: receiver,
+                        file: Array.from(new Uint8Array(reader1.result)),
+                        sig: Array.from(new Uint8Array(reader2.result)),
+                        filename: file.name
+                    });
+                    alert("Đã gửi!");
+                };
+                reader2.readAsArrayBuffer(sig);
+            };
+            reader1.readAsArrayBuffer(file);
+        }
+
+        socket.on('receive_file', (data) => {
+            const area = document.getElementById('receiveArea');
+            area.innerHTML += `
+            <p><strong>Nhận file từ ${data.sender}</strong></p>
+            <p>SHA-256: ${data.hash}</p>
+            <a href="/download/${data.filename}" target="_blank">Tải file</a><br>
+            <a href="/download/${data.sig_filename}" target="_blank">Tải chữ ký số</a><br><br>
+        `;
+        });
+    </script>
+</body>
+
+</html>
