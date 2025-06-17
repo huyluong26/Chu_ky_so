@@ -31,6 +31,38 @@ Nhấn "Vào" để đăng nhập vào hệ thống (chuyển sang giao diện c
 </p>
     <p align="center">
         <img src="Screenshot 2025-06-17 200520.png" alt="AIoTLab Logo" width="680"/>
+        <p>Giao diện chính sau khi đăng nhập
+
+ Phần gửi file
+Nhập tên người nhận (để chỉ định ai sẽ nhận file)
+
+Chọn file cần gửi
+
+Chọn chữ ký số tương ứng với file đó
+
+Nhấn "Gửi File" để thực hiện gửi file + chữ ký số
+
+ Phần nhận file
+Hiển thị thông tin file nhận được:
+
+Tên người gửi (ví dụ: "Nhận file từ Huy")
+
+Mã SHA-256 để kiểm tra tính toàn vẹn của file
+
+Có 2 link:
+
+"Tải file": tải file được gửi
+
+"Tải chữ ký số": tải chữ ký số để xác thực
+
+ Tính năng bảo mật
+Chữ ký số giúp đảm bảo:
+
+Nguồn gốc xác thực: đúng là người gửi
+
+Dữ liệu không bị thay đổi
+
+Mã băm SHA-256 hiển thị giúp kiểm tra file nhận có bị thay đổi không</p>
         <img src="Screenshot 2025-06-17 200616.png" alt="AIoTLab Logo" width="680"/>
         
     </p>
